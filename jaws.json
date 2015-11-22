@@ -1,0 +1,19 @@
+{
+  "name": "fantasybach-backend",
+  "version": "0.0.1",
+  "location": "https://github.com/...",
+  "author": "",
+  "description": "",
+  "domain": "api.fantasybach.com",
+  "stages": {
+    "dec": [
+      {
+        "region": "us-east-1",
+        "iamRoleArnLambda": "arn:aws:iam::977273028392:role/dec-fantasybach-backend-r-IamRoleLambda-G32Q1CTKPHRJ",
+        "iamRoleArnApiGateway": "arn:aws:iam::977273028392:role/dec-fantasybach-backend-r-IamRoleApiGateway-AAOT08EA7EIM",
+        "jawsBucket": "jaws.dec.useast1.api.fantasybach.com",
+        "restApiId": "ur0jqkvnie"
+      }
+    ]
+  }
+}
