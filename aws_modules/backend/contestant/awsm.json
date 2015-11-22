@@ -23,18 +23,18 @@
     }
   },
   "apiGateway": {
-    "deploy": true,
+    "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "season/{season}/contestant",
+      "Path": "season/{seasonId}/contestant",
       "Method": "GET",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"season\":\"$input.params('season')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\"}"
+        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\"}"
       },
       "RequestParameters": {
-        "integration.request.path.season": "method.request.path.season",
+        "integration.request.path.seasonId": "method.request.path.seasonId",
         "integration.request.querystring.id": "method.request.querystring.id",
         "integration.request.querystring.ids": "method.request.querystring.ids"
       },

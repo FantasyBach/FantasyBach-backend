@@ -23,7 +23,7 @@
     }
   },
   "apiGateway": {
-    "deploy": true,
+    "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
       "Path": "login",
