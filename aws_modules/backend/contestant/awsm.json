@@ -40,7 +40,10 @@
       },
       "Responses": {
         "400": {
-          "statusCode": "400"
+          "statusCode": "400",
+          "responseParameters": {
+            "method.response.header.Access-Control-Allow-Origin": "'*'"
+          }
         },
         "default": {
           "statusCode": "200",
