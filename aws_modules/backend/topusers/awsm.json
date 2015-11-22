@@ -16,7 +16,7 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/login/handler.handler",
+      "Handler": "aws_modules/backend/topusers/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
@@ -26,15 +26,16 @@
     "deploy": true,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "login",
+      "Path": "season/{seasonId}/topUsers",
       "Method": "GET",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"token\":\"$input.params('token')\"}"
+        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"numberOfUsers\":\"$input.params('numberOfUsers')\"}"
       },
       "RequestParameters": {
-        "integration.request.querystring.integrationQueryParam": "method.request.querystring.token"
+        "integration.request.path.seasonId": "method.request.path.seasonId",
+        "integration.request.querystring.numberOfUsers": "method.request.querystring.numberOfUsers"
       },
       "Responses": {
         "400": {

@@ -16,7 +16,7 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/login/handler.handler",
+      "Handler": "aws_modules/backend/pickremove/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
@@ -26,15 +26,16 @@
     "deploy": true,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "login",
-      "Method": "GET",
+      "Path": "season/{seasonId}/round/{roundId}/pick",
+      "Method": "DELETE",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"token\":\"$input.params('token')\"}"
+        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"roundId\":\"$input.params('roundId')\", \"body\":$input.json('$')}"
       },
       "RequestParameters": {
-        "integration.request.querystring.integrationQueryParam": "method.request.querystring.token"
+        "integration.request.path.seasonId": "method.request.path.seasonId",
+        "integration.request.path.roundId": "method.request.path.roundId"
       },
       "Responses": {
         "400": {

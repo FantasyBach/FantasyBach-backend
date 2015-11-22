@@ -16,7 +16,7 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/login/handler.handler",
+      "Handler": "aws_modules/backend/user/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
@@ -26,15 +26,17 @@
     "deploy": true,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "login",
+      "Path": "season/{seasonId}/user",
       "Method": "GET",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"token\":\"$input.params('token')\"}"
+        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\"}"
       },
       "RequestParameters": {
-        "integration.request.querystring.integrationQueryParam": "method.request.querystring.token"
+        "integration.request.path.seasonId": "method.request.path.seasonId",
+        "integration.request.querystring.id": "method.request.querystring.id",
+        "integration.request.querystring.ids": "method.request.querystring.ids"
       },
       "Responses": {
         "400": {
