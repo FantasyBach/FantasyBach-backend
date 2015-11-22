@@ -1,7 +1,7 @@
 {
   "lambda": {
     "envVars": [],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -28,10 +28,10 @@
       "Type": "AWS",
       "Path": "season/{seasonId}/contestant",
       "Method": "GET",
-      "AuthorizationType": "none",
+      "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\"}"
+        "application/json": "{\"method\":\"$context.httpMethod\", \"userAgent\":\"$context.identity.userAgent\", \"cognitoAuthenticationProvider\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationProvider)\", \"cognitoAuthenticationType\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationType)\", \"cognitoIdentityId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityId)\", \"cognitoIdentityPoolId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityPoolId)\"}"
       },
       "RequestParameters": {
         "integration.request.path.seasonId": "method.request.path.seasonId",
@@ -44,7 +44,9 @@
         },
         "default": {
           "statusCode": "200",
-          "responseParameters": {},
+          "responseParameters": {
+            "method.response.header.Access-Control-Allow-Origin": "'*'"
+          },
           "responseModels": {},
           "responseTemplates": {
             "application/json": ""
