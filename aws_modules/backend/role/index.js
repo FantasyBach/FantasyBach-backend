@@ -3,43 +3,40 @@
  */
 
 var _ = require('lodash');
+var AWS = require('aws-sdk');
+var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
 // Export For Lambda Handler
-module.exports.run = function(event, context, cb) {
-    return cb(null, action(event.seasonId, event.id, event.ids));
+module.exports.run = function(event, context, done) {
+    action(event.seasonId, event.id, event.ids, done);
 };
 
-var ROLES = [
-    {
-        id : 1,
-        name : 'Kisser',
-        verbName : 'Kisses',
-        description : '+.25 per kissing session. A kissing session is ended by the Bachelor and the contestant having a conversation.'
-    },
-    {
-        id : 2,
-        name : 'Bleeper',
-        verbName : 'Bleeps',
-        description : '+.25 per bleep. A bleep is counted each time the contestant\'s voice is bleeped out.'
-    },
-    {
-        id : 3,
-        name : 'Cryer',
-        verbName : 'Tears',
-        description : '+1 for every time the contestant sheds tears. The contestant must regain composure before she can start crying again.'
-    }
-];
-
 // Your Code
-var action = function(seasonId, id, ids) {
-    if (!id && !ids) { return ROLES; }
-    if (ids) {
-        ids = ids.split(',');
+var action = function(seasonId, id, ids, done) {
+    if (!id && !ids) {
+        return dynamodbDoc.query({
+            TableName : process.env.ROLES_TABLE,
+            IndexName: 'seasonId-id-index',
+            KeyConditionExpression: 'seasonId = :seasonId',
+            ExpressionAttributeValues: {
+                ':seasonId': seasonId
+            }
+        }, done);
     }
-    if (id) {
-        ids = [id];
-    }
-    return _.filter(ROLES, function(role) {
-        return _.contains(ids, role.id);
-    });
+    ids = ids ? ids.split(',') : [id];
+
+    var params = {
+        RequestItems : {}
+    };
+    params.RequestItems[process.env.ROLES_TABLE] = {
+        Keys : _.map(ids, function(id) {
+            return {
+                id : id
+            }
+        })
+    };
+    return dynamodbDoc.batchGet(params, function(err, data) {
+        if (err) { return done(err); }
+        done(null, data.Responses[process.env.ROLES_TABLE]);
+    })
 };

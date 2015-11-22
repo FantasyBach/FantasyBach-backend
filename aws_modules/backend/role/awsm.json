@@ -1,7 +1,9 @@
 {
   "lambda": {
-    "envVars": [],
-    "deploy": true,
+    "envVars": [
+      "ROLES_TABLE"
+    ],
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -10,7 +12,9 @@
         "exclude": [
           "aws-sdk"
         ],
-        "includePaths": []
+        "includePaths": [
+          "node_modules/awsm-images/node_modules/aws-sdk"
+        ]
       },
       "excludePatterns": []
     },

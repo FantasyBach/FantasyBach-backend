@@ -1,7 +1,7 @@
 {
   "lambda": {
     "envVars": [],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",

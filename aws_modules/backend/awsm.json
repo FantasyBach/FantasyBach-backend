@@ -6,7 +6,23 @@
   "description": "",
   "resources": {
     "cloudFormation": {
-      "LambdaIamPolicyDocumentStatements": [],
+      "LambdaIamPolicyDocumentStatements": [
+        {
+          "Resource": {
+            "Fn::Join": [
+              ":",
+              [
+                "arn:aws:dynamodb",
+                {
+                  "Ref": "AWS::Region"
+                },
+                "*",
+                "table/fantasybach-*"
+              ]
+            ]
+          }
+        }
+      ],
       "ApiGatewayIamPolicyDocumentStatements": [],
       "Resources": {}
     }
