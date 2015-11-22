@@ -6,13 +6,13 @@
   "description": "",
   "domain": "api.fantasybach.com",
   "stages": {
-    "dec": [
+    "dev": [
       {
         "region": "us-east-1",
-        "iamRoleArnLambda": "arn:aws:iam::977273028392:role/dec-fantasybach-backend-r-IamRoleLambda-G32Q1CTKPHRJ",
-        "iamRoleArnApiGateway": "arn:aws:iam::977273028392:role/dec-fantasybach-backend-r-IamRoleApiGateway-AAOT08EA7EIM",
-        "jawsBucket": "jaws.dec.useast1.api.fantasybach.com",
-        "restApiId": "ur0jqkvnie"
+        "iamRoleArnLambda": "arn:aws:iam::977273028392:role/dev-fantasybach-backend-r-IamRoleLambda-7LVZZHOJ3V50",
+        "iamRoleArnApiGateway": "arn:aws:iam::977273028392:role/dev-fantasybach-backend-r-IamRoleApiGateway-1BYK0KAA6L3RE",
+        "jawsBucket": "jaws.dev.useast1.api.fantasybach.com",
+        "restApiId": "h6nctc5776"
       }
     ]
   }

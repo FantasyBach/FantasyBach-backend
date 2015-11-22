@@ -4,21 +4,21 @@
   "Parameters": {
     "aaLambdaRoleArn": {
       "Type": "String",
-      "Default": "arn:aws:iam::977273028392:role/dec-fantasybach-backend-r-IamRoleLambda-G32Q1CTKPHRJ"
+      "Default": "arn:aws:iam::977273028392:role/dev-fantasybach-backend-r-IamRoleLambda-7LVZZHOJ3V50"
     }
   },
   "Resources": {
-    "lGreetingsHello": {
+    "lBackendLogin": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Description": "",
-        "Handler": "aws_modules/greetings/hello/handler.handler",
+        "Handler": "aws_modules/backend/login/handler.handler",
         "MemorySize": 1024,
         "Runtime": "nodejs",
         "Timeout": 6,
         "Code": {
-          "S3Bucket": "jaws.dec.useast1.api.fantasybach.com",
-          "S3Key": "JAWS/fantasybach-backend/dec/lambdas/lGreetingsHello@1448152170240.zip"
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendLogin@1448153604825.zip"
         },
         "Role": {
           "Ref": "aaLambdaRoleArn"

@@ -15,19 +15,19 @@
     },
     "aaJawsBucket": {
       "Type": "String",
-      "Default": "jaws.dec.useast1.api.fantasybach.com"
+      "Default": "jaws.dev.useast1.api.fantasybach.com"
     },
     "aaStage": {
       "Type": "String",
-      "Default": "dec"
+      "Default": "dev"
     },
     "aaDataModelStage": {
       "Type": "String",
-      "Default": "dec"
+      "Default": "dev"
     },
     "aaNotficationEmail": {
       "Type": "String",
-      "Default": "mitchell@loeppky.com"
+      "Default": ""
     },
     "aaDefaultDynamoRWThroughput": {
       "Type": "String",
@@ -152,32 +152,6 @@
                   ]
                 ]
               }
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "s3:PutObject",
-                "s3:PutObjectAcl"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:s3:::",
-                      "imgresize.",
-                      {
-                        "Ref": "aaProjectDomain"
-                      },
-                      "/",
-                      {
-                        "Ref": "aaDataModelStage"
-                      },
-                      "*"
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         },
@@ -254,24 +228,6 @@
         }
       },
       "DeletionPolicy": "Retain"
-    },
-    "ImgS3Bucket": {
-      "Type": "AWS::S3::Bucket",
-      "DeletionPolicy": "Delete",
-      "Properties": {
-        "AccessControl": "PublicRead",
-        "BucketName": {
-          "Fn::Join": [
-            ".",
-            [
-              "imgresize",
-              {
-                "Ref": "aaProjectDomain"
-              }
-            ]
-          ]
-        }
-      }
     }
   },
   "Outputs": {
