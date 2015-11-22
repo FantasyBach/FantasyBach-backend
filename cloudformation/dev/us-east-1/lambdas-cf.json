@@ -8,6 +8,40 @@
     }
   },
   "Resources": {
+    "lBackendRound": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/round/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendRound@1448180636143.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
+    "lBackendContestant": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/contestant/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendContestant@1448179804102.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
     "lBackendUser": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -36,23 +70,6 @@
         "Code": {
           "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
           "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendRole@1448175985852.zip"
-        },
-        "Role": {
-          "Ref": "aaLambdaRoleArn"
-        }
-      }
-    },
-    "lBackendContestant": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Description": "",
-        "Handler": "aws_modules/backend/contestant/handler.handler",
-        "MemorySize": 1024,
-        "Runtime": "nodejs",
-        "Timeout": 6,
-        "Code": {
-          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
-          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendContestant@1448174090123.zip"
         },
         "Role": {
           "Ref": "aaLambdaRoleArn"

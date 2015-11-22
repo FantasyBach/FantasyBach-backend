@@ -1,7 +1,7 @@
 {
   "lambda": {
     "envVars": [
-      "ROLES_TABLE"
+      "ROUNDS_TABLE"
     ],
     "deploy": true,
     "package": {
@@ -20,17 +20,17 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/role/handler.handler",
+      "Handler": "aws_modules/backend/round/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
     }
   },
   "apiGateway": {
-    "deploy": true,
+    "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "season/{seasonId}/role",
+      "Path": "season/{seasonId}/round",
       "Method": "GET",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
