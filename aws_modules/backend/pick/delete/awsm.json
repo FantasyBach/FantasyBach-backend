@@ -1,7 +1,7 @@
 {
   "lambda": {
     "envVars": [],
-    "deploy": false,
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -16,7 +16,7 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/pickadd/handler.handler",
+      "Handler": "aws_modules/backend/pick/delete/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
@@ -27,8 +27,8 @@
     "cloudFormation": {
       "Type": "AWS",
       "Path": "season/{seasonId}/round/{roundId}/pick",
-      "Method": "POST",
-      "AuthorizationType": "none",
+      "Method": "DELETE",
+      "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
         "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"roundId\":\"$input.params('roundId')\", \"body\":$input.json('$')}"

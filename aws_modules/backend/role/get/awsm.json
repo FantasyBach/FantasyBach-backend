@@ -1,0 +1,65 @@
+{
+  "lambda": {
+    "envVars": [
+      "ROLES_TABLE"
+    ],
+    "deploy": true,
+    "package": {
+      "optimize": {
+        "builder": "browserify",
+        "minify": true,
+        "ignore": [],
+        "exclude": [
+          "aws-sdk"
+        ],
+        "includePaths": [
+          "node_modules/aws-sdk"
+        ]
+      },
+      "excludePatterns": []
+    },
+    "cloudFormation": {
+      "Description": "",
+      "Handler": "aws_modules/backend/role/get/handler.handler",
+      "MemorySize": 1024,
+      "Runtime": "nodejs",
+      "Timeout": 6
+    }
+  },
+  "apiGateway": {
+    "deploy": false,
+    "cloudFormation": {
+      "Type": "AWS",
+      "Path": "season/{seasonId}/role",
+      "Method": "GET",
+      "AuthorizationType": "AWS_IAM",
+      "ApiKeyRequired": false,
+      "RequestTemplates": {
+        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\"}"
+      },
+      "RequestParameters": {
+        "integration.request.path.seasonId": "method.request.path.seasonId",
+        "integration.request.querystring.id": "method.request.querystring.id",
+        "integration.request.querystring.ids": "method.request.querystring.ids"
+      },
+      "Responses": {
+        "400": {
+          "statusCode": "400",
+          "responseParameters": {
+            "method.response.header.Access-Control-Allow-Origin": "'*'"
+          }
+        },
+        "default": {
+          "statusCode": "200",
+          "responseParameters": {
+            "method.response.header.Access-Control-Allow-Origin": "'*'"
+          },
+          "responseModels": {},
+          "responseTemplates": {
+            "application/json": ""
+          }
+        }
+      }
+    }
+  }
+}

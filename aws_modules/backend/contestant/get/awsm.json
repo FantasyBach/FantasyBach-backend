@@ -1,7 +1,7 @@
 {
   "lambda": {
     "envVars": [],
-    "deploy": false,
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -16,7 +16,7 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/pickremove/handler.handler",
+      "Handler": "aws_modules/backend/contestant/get/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
@@ -26,16 +26,17 @@
     "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "season/{seasonId}/round/{roundId}/pick",
-      "Method": "DELETE",
-      "AuthorizationType": "none",
+      "Path": "season/{seasonId}/contestant",
+      "Method": "GET",
+      "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"roundId\":\"$input.params('roundId')\", \"body\":$input.json('$')}"
+        "application/json": "{\"method\":\"$context.httpMethod\", \"userAgent\":\"$context.identity.userAgent\", \"cognitoAuthenticationProvider\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationProvider)\", \"cognitoAuthenticationType\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationType)\", \"cognitoIdentityId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityId)\", \"cognitoIdentityPoolId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityPoolId)\"}"
       },
       "RequestParameters": {
         "integration.request.path.seasonId": "method.request.path.seasonId",
-        "integration.request.path.roundId": "method.request.path.roundId"
+        "integration.request.querystring.id": "method.request.querystring.id",
+        "integration.request.querystring.ids": "method.request.querystring.ids"
       },
       "Responses": {
         "400": {

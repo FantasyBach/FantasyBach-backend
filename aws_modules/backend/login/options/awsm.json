@@ -1,7 +1,7 @@
 {
   "lambda": {
     "envVars": [],
-    "deploy": false,
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -16,7 +16,7 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/topusers/handler.handler",
+      "Handler": "aws_modules/backend/login/options/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
@@ -26,27 +26,18 @@
     "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "season/{seasonId}/topUsers",
-      "Method": "GET",
+      "Path": "login",
+      "Method": "OPTIONS",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
-      "RequestTemplates": {
-        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"numberOfUsers\":\"$input.params('numberOfUsers')\"}"
-      },
-      "RequestParameters": {
-        "integration.request.path.seasonId": "method.request.path.seasonId",
-        "integration.request.querystring.numberOfUsers": "method.request.querystring.numberOfUsers"
-      },
+      "RequestTemplates": {},
+      "RequestParameters": {},
       "Responses": {
-        "400": {
-          "statusCode": "400",
-          "responseParameters": {
-            "method.response.header.Access-Control-Allow-Origin": "'*'"
-          }
-        },
         "default": {
           "statusCode": "200",
           "responseParameters": {
+            "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-amz-security-token'",
+            "method.response.header.Access-Control-Allow-Methods": "'GET,OPTIONS'",
             "method.response.header.Access-Control-Allow-Origin": "'*'"
           },
           "responseModels": {},
