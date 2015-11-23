@@ -3,7 +3,7 @@
     "envVars": [
       "ROLES_TABLE"
     ],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",

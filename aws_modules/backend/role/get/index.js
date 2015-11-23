@@ -21,7 +21,10 @@ var action = function(seasonId, id, ids, done) {
             ExpressionAttributeValues: {
                 ':seasonId': seasonId
             }
-        }, done);
+        }, function(err, data) {
+            if (err) { return done(err); }
+            done(null, data.Items);
+        });
     }
     ids = ids ? ids.split(',') : [id];
 

@@ -38,3 +38,4 @@ node_modules
 #JAWS STUFF
 admin.env
 .env
+static/bundle.js
