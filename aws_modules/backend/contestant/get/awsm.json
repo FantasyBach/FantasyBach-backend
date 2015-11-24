@@ -1,7 +1,9 @@
 {
   "lambda": {
-    "envVars": [],
-    "deploy": false,
+    "envVars": [
+      "CONTESTANTS_TABLE"
+    ],
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",
