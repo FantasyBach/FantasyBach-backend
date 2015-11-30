@@ -4,7 +4,7 @@
       "AWS_ACCOUNT_ID",
       "COGNITO_IDENTITY_POOL_ID"
     ],
-    "deploy": false,
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",

@@ -3,7 +3,7 @@
     "envVars": [
       "CONTESTANTS_TABLE"
     ],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -12,7 +12,9 @@
         "exclude": [
           "aws-sdk"
         ],
-        "includePaths": []
+        "includePaths": [
+          "node_modules/aws-sdk"
+        ]
       },
       "excludePatterns": []
     },
@@ -33,7 +35,7 @@
       "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"method\":\"$context.httpMethod\", \"userAgent\":\"$context.identity.userAgent\", \"cognitoAuthenticationProvider\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationProvider)\", \"cognitoAuthenticationType\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationType)\", \"cognitoIdentityId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityId)\", \"cognitoIdentityPoolId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityPoolId)\"}"
+        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\", \"method\":\"$context.httpMethod\", \"userAgent\":\"$context.identity.userAgent\", \"cognitoAuthenticationProvider\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationProvider)\", \"cognitoAuthenticationType\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationType)\", \"cognitoIdentityId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityId)\", \"cognitoIdentityPoolId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityPoolId)\"}"
       },
       "RequestParameters": {
         "integration.request.path.seasonId": "method.request.path.seasonId",
