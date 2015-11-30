@@ -35,7 +35,7 @@
       "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\", \"method\":\"$context.httpMethod\", \"userAgent\":\"$context.identity.userAgent\", \"cognitoAuthenticationProvider\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationProvider)\", \"cognitoAuthenticationType\":\"$util.escapeJavaScript($context.identity.cognitoAuthenticationType)\", \"cognitoIdentityId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityId)\", \"cognitoIdentityPoolId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityPoolId)\"}"
+        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\"}"
       },
       "RequestParameters": {
         "integration.request.path.seasonId": "method.request.path.seasonId",

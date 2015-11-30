@@ -26,7 +26,7 @@
     "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "season/{seasonId}/role",
+      "Path": "season/{seasonId}/round/{roundId}/pick",
       "Method": "OPTIONS",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
