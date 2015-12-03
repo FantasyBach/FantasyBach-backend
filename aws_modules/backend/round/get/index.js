@@ -41,5 +41,5 @@ var action = function(seasonId, id, ids, done) {
   return dynamodbDoc.batchGet(params, function(err, data) {
     if (err) { return done(err); }
     done(null, data.Responses[process.env.ROUNDS_TABLE]);
-  })
+  });
 };

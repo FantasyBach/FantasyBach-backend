@@ -62,23 +62,18 @@ var updateUser = function(callback) {
     dynamodbDoc.update({
         TableName : process.env.USERS_TABLE,
         Key : { id : userId },
-        AttributeUpdates : {
-            facebookId : {
-                Action : 'PUT',
-                Value : facebookProfile.id
-            },
-            email : {
-                Action : 'PUT',
-                Value : facebookProfile.email
-            },
-            profilePicture : {
-                Action : 'PUT',
-                Value : facebookProfile.picture
-            },
-            name : {
-                Action : 'PUT',
-                Value : facebookProfile.firstname + ' ' + facebookProfile.lastname
-            }
+        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username',
+        ExpressionAttributeNames : {
+            '#facebookId' : 'facebookId',
+            '#email' : 'email',
+            '#profilePicture' : 'profilePicture',
+            '#name' : 'name'
+        },
+        ExpressionAttributeValues : {
+            ':facebookId' : facebookProfile.id,
+            ':email' : facebookProfile.email,
+            ':profilePicture' : facebookProfile.picture,
+            ':username' : facebookProfile.firstname + ' ' + facebookProfile.lastname
         }
     }, callback);
 };
@@ -99,7 +94,7 @@ var action = function(token, done) {
     // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/Config.html#region-property
     var regionName = 'us-east-1';
     AWS.config.update({region: regionName});
-    dynamodbDoc = new AWS.DynamoDB.DocumentClient()
+    dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
 
     getCognitoId(function(err, data) {
