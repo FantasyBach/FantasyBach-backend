@@ -7,7 +7,7 @@ var moment = require('moment-timezone');
 var AWS = require('aws-sdk');
 var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
-var TIME_ZONE = "America/Los_Angeles";
+var TIME_ZONE = 'America/Los_Angeles';
 
 // Export For Lambda Handler
 module.exports.run = function(event, context, done) {
@@ -31,7 +31,7 @@ var updatePick = function(userId, seasonId, roundId, contestantId, roleId, callb
         TableName : process.env.USERS_TABLE,
         Key : { id : userId },
         ConditionExpression: '#picks.#seasonId.#roundId.#roleId = :contestantId',
-        UpdateExpression : 'Remove #picks.#seasonId.#roundId.#roleId',
+        UpdateExpression : 'REMOVE #picks.#seasonId.#roundId.#roleId',
         ExpressionAttributeNames : {
             '#picks' : 'picks',
             '#seasonId' : seasonId,

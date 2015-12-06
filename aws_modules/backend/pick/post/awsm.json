@@ -1,7 +1,8 @@
 {
   "lambda": {
     "envVars": [
-      "USERS_TABLE"
+      "USERS_TABLE",
+      "ROUNDS_TABLE"
     ],
     "deploy": false,
     "package": {

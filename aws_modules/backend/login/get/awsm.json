@@ -3,7 +3,8 @@
     "envVars": [
       "AWS_ACCOUNT_ID",
       "COGNITO_IDENTITY_POOL_ID",
-      "USERS_TABLE"
+      "USERS_TABLE",
+      "ROUNDS_TABLE"
     ],
     "deploy": false,
     "package": {

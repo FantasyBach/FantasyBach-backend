@@ -4,7 +4,7 @@
       "USERS_TABLE",
       "ROUNDS_TABLE"
     ],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",

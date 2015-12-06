@@ -3,7 +3,7 @@
     "envVars": [
       "USERS_TABLE"
     ],
-    "deploy": false,
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",

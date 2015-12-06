@@ -14,10 +14,20 @@ var cognitoIdentity;
 var userId;
 var facebookProfile;
 var awsCredentials;
+var picks;
 
 // Export For Lambda Handler
 module.exports.run = function(event, context, done) {
     return action(event.token, done);
+};
+
+var getRounds = function(callback) {
+    dynamodbDoc.scan({
+        TableName : process.env.ROUNDS_TABLE
+    }, function(err, data) {
+        if (err) { return callback(err); }
+        callback(null, data.Items);
+    });
 };
 
 var getCognitoId = function(callback) {
@@ -62,18 +72,20 @@ var updateUser = function(callback) {
     dynamodbDoc.update({
         TableName : process.env.USERS_TABLE,
         Key : { id : userId },
-        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username',
+        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username, #picks=if_not_exists(#picks, :picks)',
         ExpressionAttributeNames : {
             '#facebookId' : 'facebookId',
             '#email' : 'email',
             '#profilePicture' : 'profilePicture',
-            '#name' : 'name'
+            '#name' : 'name',
+            '#picks' : 'picks'
         },
         ExpressionAttributeValues : {
             ':facebookId' : facebookProfile.id,
             ':email' : facebookProfile.email,
             ':profilePicture' : facebookProfile.picture,
-            ':username' : facebookProfile.firstname + ' ' + facebookProfile.lastname
+            ':username' : facebookProfile.firstname + ' ' + facebookProfile.lastname,
+            ':picks' : picks
         }
     }, callback);
 };
@@ -108,13 +120,19 @@ var action = function(token, done) {
         cognitoIdentity = data.cognitoIdentity;
         async.parallel({
             credentials : getCredentials,
-            profile : getFacebookProfile
+            profile : getFacebookProfile,
+            rounds : getRounds
         }, function(err, data) {
             if (err) {
                 return done(err);
             }
             awsCredentials = data.credentials;
             facebookProfile = data.profile;
+            picks = {};
+            _.each(data.rounds, function(round) {
+                if (!picks[round.seasonId]) { picks[round.seasonId] = {}; }
+                picks[round.seasonId][round.id] = {};
+            });
             updateUser(function(err) {
                 if (err) {
                     return done(err);

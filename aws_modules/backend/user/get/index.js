@@ -13,9 +13,6 @@ module.exports.run = function(event, context, done) {
 
 // Your Code
 var action = function(seasonId, userId, id, ids, done) {
-    if (id) {
-        ids = [ id ];
-    }
     var projectionParams = {
         ProjectionExpression : '#id, #nickname, #profilePicture, #picks.#seasonId',
         ExpressionAttributeNames : {
@@ -26,32 +23,49 @@ var action = function(seasonId, userId, id, ids, done) {
             '#seasonId' : seasonId
         }
     };
-    if (!ids) {
-        ids = [ userId ];
+    if (!ids && !id) {
         projectionParams.ProjectionExpression += ', #email, #name, #facebookId';
         _.extend(projectionParams.ExpressionAttributeNames, {
             '#email' : 'email',
             '#name' : 'name',
             '#facebookId' : 'facebookId'
-        })
-    }
-    var params = {
-        RequestItems : {}
-    };
-    params.RequestItems[process.env.USERS_TABLE] = _.assign(projectionParams, {
-        Keys : _.map(ids, function(id) {
-            return {
-                id : id
-            }
-        })
-    });
-    return dynamodbDoc.batchGet(params, function(err, data) {
-        if (err) { return done(err); }
-        var users = data.Responses[process.env.USERS_TABLE];
-        _.each(users, function(user) {
-            if (!user.picks) { return; }
-            user.picks = user.picks[seasonId];
         });
-        done(null, users);
-    })
+    }
+
+    if (ids) {
+        var params = {
+            RequestItems : {}
+        };
+        params.RequestItems[process.env.USERS_TABLE] = _.assign(projectionParams, {
+            Keys : _.map(ids, function(id) {
+                return {
+                    id : id
+                }
+            })
+        });
+        return dynamodbDoc.batchGet(params, function(err, data) {
+            if (err) { return done(err); }
+            var users = data.Responses[process.env.USERS_TABLE];
+            _.each(users, function(user) {
+                if (!user.picks) { return; }
+                user.picks = user.picks[seasonId];
+            });
+            done(null, users);
+        });
+    }
+    if (!id) {
+        id = userId;
+    }
+    return dynamodbDoc.get(_.assign(projectionParams, {
+        TableName : process.env.USERS_TABLE,
+        Key : {
+            id : id
+        }
+    }), function(err, data) {
+        if (err) { return done(err); }
+        if (data.Item.picks) {
+            data.Item.picks = data.Item.picks[seasonId];
+        }
+        done(null, data.Item);
+    });
 };
