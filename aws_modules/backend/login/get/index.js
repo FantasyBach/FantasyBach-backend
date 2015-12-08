@@ -5,6 +5,7 @@
 var AWS = require('aws-sdk');
 var _ = require('lodash');
 var async = require('async');
+var fbgraph = require('fbgraphapi');
 
 // Globals
 var dynamodbDoc;
@@ -15,6 +16,7 @@ var userId;
 var facebookProfile;
 var awsCredentials;
 var picks;
+var fb;
 
 // Export For Lambda Handler
 module.exports.run = function(event, context, done) {
@@ -59,13 +61,15 @@ var getCredentials = function(callback) {
 };
 
 var getFacebookProfile = function(callback) {
-    callback(null, {
-        id : '123456789',
-        email : 'mitchell@loeppky.com',
-        picture : 'someurl.com',
-        firstname : 'Mitchell',
-        lastname : 'Loeppky'
-    });
+    fb.me(function(err, profile) {
+        if (err) { return callback(err); }
+        callback(null, {
+            id : profile.id,
+            email : profile.email,
+            picture : profile.picture && profile.picture.data && profile.picture.data.url,
+            name : profile.name
+        });
+    }, 'id,name,birthday,email,picture.type(large)');
 };
 
 var updateUser = function(callback) {
@@ -84,7 +88,7 @@ var updateUser = function(callback) {
             ':facebookId' : facebookProfile.id,
             ':email' : facebookProfile.email,
             ':profilePicture' : facebookProfile.picture,
-            ':username' : facebookProfile.firstname + ' ' + facebookProfile.lastname,
+            ':username' : facebookProfile.name,
             ':picks' : picks
         }
     }, callback);
@@ -95,7 +99,7 @@ var updateUser = function(callback) {
 // http://docs.aws.amazon.com/cognito/devguide/identity/concepts/authentication-flow/
 // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentity.html
 var action = function(token, done) {
-    console.log('running action with token: ' + token);
+    fb = new fbgraph.Facebook(token, 'v2.4');
     cognitoLoginsParam = {
         Logins : {
             // http://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/CognitoIdentity.html#getId-property
