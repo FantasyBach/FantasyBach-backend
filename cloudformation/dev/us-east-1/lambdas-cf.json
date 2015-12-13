@@ -8,6 +8,40 @@
     }
   },
   "Resources": {
+    "lBackendRosePost": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/rose/post/handler.handler",
+        "MemorySize": 1536,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendRosePost@1450044951892.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
+    "lBackendRoseOptions": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/rose/options/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendRoseOptions@1450042783341.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
     "lBackendActionPost": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
