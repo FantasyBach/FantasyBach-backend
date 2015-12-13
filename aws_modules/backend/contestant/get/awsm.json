@@ -3,7 +3,7 @@
     "envVars": [
       "CONTESTANTS_TABLE"
     ],
-    "deploy": false,
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -27,7 +27,7 @@
     }
   },
   "apiGateway": {
-    "deploy": false,
+    "deploy": true,
     "cloudFormation": {
       "Type": "AWS",
       "Path": "season/{seasonId}/contestant",
