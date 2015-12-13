@@ -3,7 +3,7 @@
     "envVars": [
       "USERS_TABLE"
     ],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",
@@ -27,7 +27,7 @@
     }
   },
   "apiGateway": {
-    "deploy": true,
+    "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
       "Path": "nickname",
