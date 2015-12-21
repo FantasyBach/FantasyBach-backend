@@ -18,7 +18,7 @@
         "Timeout": 6,
         "Code": {
           "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
-          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUserGet@1450690577714.zip"
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUserGet@1450692578139.zip"
         },
         "Role": {
           "Ref": "aaLambdaRoleArn"

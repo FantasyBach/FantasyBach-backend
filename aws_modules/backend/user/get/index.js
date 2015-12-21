@@ -24,16 +24,9 @@ var action = function(seasonId, userId, id, ids, done) {
             '#seasonId' : seasonId
         }
     };
-    if (!ids && !id) {
-        projectionParams.ProjectionExpression += ', #email, #name, #facebookId';
-        _.extend(projectionParams.ExpressionAttributeNames, {
-            '#email' : 'email',
-            '#name' : 'name',
-            '#facebookId' : 'facebookId'
-        });
-    }
 
     if (ids) {
+        ids = ids.split(',');
         var params = {
             RequestItems : {}
         };
@@ -57,6 +50,12 @@ var action = function(seasonId, userId, id, ids, done) {
     }
     if (!id) {
         id = userId;
+        projectionParams.ProjectionExpression += ', #email, #name, #facebookId';
+        _.extend(projectionParams.ExpressionAttributeNames, {
+            '#email' : 'email',
+            '#name' : 'name',
+            '#facebookId' : 'facebookId'
+        });
     }
     return dynamodbDoc.get(_.assign(projectionParams, {
         TableName : process.env.USERS_TABLE,
