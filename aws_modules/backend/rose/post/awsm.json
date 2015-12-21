@@ -2,7 +2,7 @@
   "lambda": {
     "envVars": [
       "CONTESTANTS_TABLE",
-      "ADMIN_IDS"
+      "USERS_TABLE"
     ],
     "deploy": true,
     "package": {

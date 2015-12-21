@@ -76,20 +76,22 @@ var updateUser = function(callback) {
     dynamodbDoc.update({
         TableName : process.env.USERS_TABLE,
         Key : { id : userId },
-        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username, #picks=if_not_exists(#picks, :picks)',
+        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username, #picks=if_not_exists(#picks, :picks), #isAdmin=if_not_exists(#isAdmin, :isAdmin)',
         ExpressionAttributeNames : {
             '#facebookId' : 'facebookId',
             '#email' : 'email',
             '#profilePicture' : 'profilePicture',
             '#name' : 'name',
-            '#picks' : 'picks'
+            '#picks' : 'picks',
+            '#isAdmin' : 'isAdmin'
         },
         ExpressionAttributeValues : {
             ':facebookId' : facebookProfile.id,
             ':email' : facebookProfile.email,
             ':profilePicture' : facebookProfile.picture,
             ':username' : facebookProfile.name,
-            ':picks' : picks
+            ':picks' : picks,
+            ':isAdmin' : false
         }
     }, callback);
 };
