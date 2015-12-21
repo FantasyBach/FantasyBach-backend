@@ -94,6 +94,7 @@ var action = function(seasonId, roundId, userId, done) {
             var round = _.find(rounds, 'id', roundId);
             if (round.index === 0) {
                 return getContestants(seasonId, function(err, contestants) {
+                    if (err) { return done(err); }
                     var eligibleContestantIds = _.map(contestants, 'id');
                     updateRound(roundId, eligibleContestantIds, done);
                 });

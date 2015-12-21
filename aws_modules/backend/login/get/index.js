@@ -16,11 +16,16 @@ var userId;
 var facebookProfile;
 var awsCredentials;
 var picks;
+var scores;
 var fb;
 
 // Export For Lambda Handler
 module.exports.run = function(event, context, done) {
-    return action(event.token, done);
+    try {
+        return action(event.token, done);
+    } catch (e) {
+        done(e);
+    }
 };
 
 var getRounds = function(callback) {
@@ -76,13 +81,14 @@ var updateUser = function(callback) {
     dynamodbDoc.update({
         TableName : process.env.USERS_TABLE,
         Key : { id : userId },
-        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username, #picks=if_not_exists(#picks, :picks), #isAdmin=if_not_exists(#isAdmin, :isAdmin)',
+        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username, #picks=if_not_exists(#picks, :picks), #scores=if_not_exists(#scores, :scores), #isAdmin=if_not_exists(#isAdmin, :isAdmin)',
         ExpressionAttributeNames : {
             '#facebookId' : 'facebookId',
             '#email' : 'email',
             '#profilePicture' : 'profilePicture',
             '#name' : 'name',
             '#picks' : 'picks',
+            '#scores' : 'scores',
             '#isAdmin' : 'isAdmin'
         },
         ExpressionAttributeValues : {
@@ -91,6 +97,7 @@ var updateUser = function(callback) {
             ':profilePicture' : facebookProfile.picture,
             ':username' : facebookProfile.name,
             ':picks' : picks,
+            ':scores' : scores,
             ':isAdmin' : false
         }
     }, callback);
@@ -135,9 +142,12 @@ var action = function(token, done) {
             awsCredentials = data.credentials;
             facebookProfile = data.profile;
             picks = {};
+            scores = {};
             _.each(data.rounds, function(round) {
                 if (!picks[round.seasonId]) { picks[round.seasonId] = {}; }
+                if (!scores[round.seasonId]) { scores[round.seasonId] = { score : 0 }; }
                 picks[round.seasonId][round.id] = {};
+                scores[round.seasonId][round.id] = 0;
             });
             updateUser(function(err) {
                 if (err) {

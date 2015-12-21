@@ -2,9 +2,10 @@
   "lambda": {
     "envVars": [
       "ROUNDS_TABLE",
-      "USERS_TABLE"
+      "USERS_TABLE",
+      "CONTESTANTS_TABLE"
     ],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",

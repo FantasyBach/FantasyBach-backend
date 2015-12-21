@@ -14,12 +14,13 @@ module.exports.run = function(event, context, done) {
 // Your Code
 var action = function(seasonId, userId, id, ids, done) {
     var projectionParams = {
-        ProjectionExpression : '#id, #nickname, #profilePicture, #picks.#seasonId',
+        ProjectionExpression : '#id, #nickname, #profilePicture, #picks.#seasonId, #scores.#seasonId',
         ExpressionAttributeNames : {
             '#id' : 'id',
             '#nickname' : 'nickname',
             '#profilePicture' : 'profilePicture',
             '#picks' : 'picks',
+            '#scores' : 'scores',
             '#seasonId' : seasonId
         }
     };
@@ -47,8 +48,9 @@ var action = function(seasonId, userId, id, ids, done) {
             if (err) { return done(err); }
             var users = data.Responses[process.env.USERS_TABLE];
             _.each(users, function(user) {
-                if (!user.picks) { return; }
+                if (!user.picks || !user.scores) { return; }
                 user.picks = user.picks[seasonId];
+                user.scores = user.scores[seasonId];
             });
             done(null, users);
         });
@@ -65,6 +67,9 @@ var action = function(seasonId, userId, id, ids, done) {
         if (err) { return done(err); }
         if (data.Item.picks) {
             data.Item.picks = data.Item.picks[seasonId];
+        }
+        if (data.Item.scores) {
+            data.Item.scores = data.Item.scores[seasonId];
         }
         done(null, data.Item);
     });
