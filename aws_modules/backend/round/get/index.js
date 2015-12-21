@@ -23,7 +23,7 @@ var action = function(seasonId, id, ids, done) {
       }
     }, function(err, data) {
       if (err) { return done(err); }
-      done(null, data.Items);
+      done(null, _.sortBy(data.Items, 'index'));
     });
   }
   ids = ids ? ids.split(',') : [id];

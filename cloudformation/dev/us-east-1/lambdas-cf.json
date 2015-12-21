@@ -8,6 +8,57 @@
     }
   },
   "Resources": {
+    "lBackendPrepareRoundPost": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/prepareRound/post/handler.handler",
+        "MemorySize": 1536,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendPrepareRoundPost@1450662788231.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
+    "lBackendPrepareRoundOptions": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/prepareRound/options/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendPrepareRoundOptions@1450661817370.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
+    "lBackendRoundGet": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/round/get/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendRoundGet@1450661821307.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
     "lBackendEliminatePost": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -257,23 +308,6 @@
         "Code": {
           "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
           "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendPickPost@1449645516085.zip"
-        },
-        "Role": {
-          "Ref": "aaLambdaRoleArn"
-        }
-      }
-    },
-    "lBackendRoundGet": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Description": "",
-        "Handler": "aws_modules/backend/round/get/handler.handler",
-        "MemorySize": 1024,
-        "Runtime": "nodejs",
-        "Timeout": 6,
-        "Code": {
-          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
-          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendRoundGet@1449645521260.zip"
         },
         "Role": {
           "Ref": "aaLambdaRoleArn"
