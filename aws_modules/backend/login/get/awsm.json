@@ -38,7 +38,7 @@
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"token\":\"$input.params('token')\"}"
+        "application/json": "{\"token\":\"$util.urlDecode($input.params('token'))\"}"
       },
       "RequestParameters": {
         "integration.request.querystring.integrationQueryParam": "method.request.querystring.token"

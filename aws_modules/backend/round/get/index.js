@@ -8,6 +8,8 @@ var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
 // Export For Lambda Handler
 module.exports.run = function(event, context, done) {
+  console.log('New Event:');
+  console.log(event);
   action(event.seasonId, event.id, event.ids, done);
 };
 

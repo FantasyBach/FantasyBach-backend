@@ -35,7 +35,7 @@
       "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"id\":\"$input.params('id')\", \"ids\":\"$input.params('ids')\"}"
+        "application/json": "{\"seasonId\":\"$util.urlDecode($input.params('seasonId'))\", \"id\":\"$util.urlDecode($input.params('id'))\", \"ids\":\"$util.urlDecode($input.params('ids'))\"}"
       },
       "RequestParameters": {
         "integration.request.path.seasonId": "method.request.path.seasonId",
