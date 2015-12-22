@@ -7,11 +7,15 @@ var async = require('async');
 var AWS = require('aws-sdk');
 var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
+var NUM_TOP_USERS = 10;
+
 var seasonId;
 var userId;
 
 // Export For Lambda Handler
 module.exports.run = function(event, context, done) {
+    console.log('New event:');
+    console.log(event);
     seasonId = event.seasonId;
     userId = event.userId;
     action(done);
@@ -65,6 +69,19 @@ var getContestants = function(callback) {
     return dynamodbDoc.query({
         TableName : process.env.CONTESTANTS_TABLE,
         IndexName: 'seasonId-id-index',
+        KeyConditionExpression: 'seasonId = :seasonId',
+        ExpressionAttributeValues: {
+            ':seasonId': seasonId
+        }
+    }, function(err, data) {
+        if (err) { return callback(err); }
+        callback(null, data.Items);
+    });
+};
+
+var getTopUsers = function(callback) {
+    return dynamodbDoc.query({
+        TableName : process.env.TOP_USERS_TABLE,
         KeyConditionExpression: 'seasonId = :seasonId',
         ExpressionAttributeValues: {
             ':seasonId': seasonId
@@ -151,6 +168,39 @@ var updateUser = function(userId, scores, callback) {
     }, callback);
 };
 
+var updateTopUsers = function(toAdd, toRemove, callback) {
+    console.log('toAdd: ' + JSON.stringify(toAdd));
+    console.log('toRemove: ' + JSON.stringify(toRemove));
+    if (toAdd.length == 0 && toRemove.length == 0) { return callback(null, null); }
+    var topUsersTable = process.env.TOP_USERS_TABLE;
+    var params = {
+        RequestItems : {}
+    };
+    params.RequestItems[topUsersTable] = [];
+    _.each(toAdd, function(userToAdd) {
+        params.RequestItems[topUsersTable].push({
+            PutRequest : {
+                Item : {
+                    id : userToAdd.id,
+                    seasonId : seasonId
+                }
+            }
+        })
+    });
+    _.each(toRemove, function(userToRemove) {
+        params.RequestItems[topUsersTable].push({
+            DeleteRequest : {
+                Key : {
+                    id : userToRemove.id,
+                    seasonId : seasonId
+                }
+            }
+        })
+    });
+    console.log('Params: ' + JSON.stringify(params));
+    dynamodbDoc.batchWrite(params, callback);
+};
+
 // Your Code
 var action = function(done) {
     async.parallel({
@@ -160,6 +210,7 @@ var action = function(done) {
         roles : getRoles
     }, function(err, data) {
         if (err) { return done(err); }
+        console.log('Got data');
 
         var user = data.user;
         var rounds = _.sortBy(data.rounds, 'index');
@@ -182,11 +233,21 @@ var action = function(done) {
             updateUser(task.id, task.scores, callback);
         }, 8);
 
+        var topUsers = [];
         scanUsers(function(err, users, lastGroup) {
             if (err) { return done(err); }
+            console.log('Got ' + users.length + ' users');
 
             _.each(users, function(user) {
                 var newScores = calculateScore(user, rounds, rolesById, contestantsById);
+                if (topUsers.length < NUM_TOP_USERS || (topUsers.length > 0 && _.last(topUsers).score < user.score)) {
+                    topUsers.push({
+                        id : user.id,
+                        score : newScores.score
+                    });
+                    topUsers = _.sortBy(topUsers, 'score');
+                    topUsers = _.take(topUsers, NUM_TOP_USERS);
+                }
                 if (_.isEqual(newScores, user.scores)) { return; }
                 queue.push({
                     id : user.id,
@@ -194,10 +255,29 @@ var action = function(done) {
                 });
             });
             if (lastGroup) {
-                if (queue.idle()) { return done(null, null); }
-                queue.drain = function() {
-                    return done(null, null);
-                };
+                console.log('That was the last group');
+                getTopUsers(function(err, oldTopUsers) {
+                    if (err) { return done(err); }
+                    console.log('Got ' + oldTopUsers.length + ' top users');
+                    console.log('Top users: ' + JSON.stringify(topUsers));
+
+                    var usersToRemove = _.filter(oldTopUsers, function(oldTopUser) {
+                        return !_.find(topUsers, 'id', oldTopUser.id);
+                    });
+                    var usersToAdd = _.filter(topUsers, function(topUser) {
+                        return !_.find(oldTopUsers, 'id', topUser.id);
+                    });
+
+                    updateTopUsers(usersToAdd, usersToRemove, function(err) {
+                        if (err) { return done(err); }
+                        console.log('Updated top users');
+
+                        if (queue.idle()) { return done(null, null); }
+                        queue.drain = function() {
+                            return done(null, null);
+                        };
+                    });
+                });
             }
         });
     });

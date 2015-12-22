@@ -1,6 +1,9 @@
 {
   "lambda": {
-    "envVars": [],
+    "envVars": [
+      "TOP_USERS_TABLE",
+      "USERS_TABLE"
+    ],
     "deploy": false,
     "package": {
       "optimize": {
@@ -31,7 +34,7 @@
       "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"seasonId\":\"$input.params('seasonId')\", \"numberOfUsers\":\"$input.params('numberOfUsers')\"}"
+        "application/json": "{\"seasonId\":\"$util.urlDecode($input.params('seasonId'))\"}"
       },
       "RequestParameters": {
         "integration.request.path.seasonId": "method.request.path.seasonId",

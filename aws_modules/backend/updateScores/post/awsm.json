@@ -4,7 +4,8 @@
       "ROUNDS_TABLE",
       "USERS_TABLE",
       "CONTESTANTS_TABLE",
-      "ROLES_TABLE"
+      "ROLES_TABLE",
+      "TOP_USERS_TABLE"
     ],
     "deploy": false,
     "package": {

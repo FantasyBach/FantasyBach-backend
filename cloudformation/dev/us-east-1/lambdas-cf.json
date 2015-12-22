@@ -8,6 +8,40 @@
     }
   },
   "Resources": {
+    "lBackendUpdateScoresPost": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/updateScores/post/handler.handler",
+        "MemorySize": 1536,
+        "Runtime": "nodejs",
+        "Timeout": 180,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUpdateScoresPost@1450772067167.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
+    "lBackendTopusersGet": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/topusers/get/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendTopusersGet@1450771349505.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
     "lBackendRoundGet": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
@@ -53,23 +87,6 @@
         "Code": {
           "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
           "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendLoginGet@1450689843973.zip"
-        },
-        "Role": {
-          "Ref": "aaLambdaRoleArn"
-        }
-      }
-    },
-    "lBackendUpdateScoresPost": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Description": "",
-        "Handler": "aws_modules/backend/updateScores/post/handler.handler",
-        "MemorySize": 1536,
-        "Runtime": "nodejs",
-        "Timeout": 180,
-        "Code": {
-          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
-          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUpdateScoresPost@1450689849761.zip"
         },
         "Role": {
           "Ref": "aaLambdaRoleArn"
@@ -410,23 +427,6 @@
         "Code": {
           "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
           "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendRoleOptions@1449645533255.zip"
-        },
-        "Role": {
-          "Ref": "aaLambdaRoleArn"
-        }
-      }
-    },
-    "lBackendTopusersGet": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Description": "",
-        "Handler": "aws_modules/backend/topusers/get/handler.handler",
-        "MemorySize": 1024,
-        "Runtime": "nodejs",
-        "Timeout": 6,
-        "Code": {
-          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
-          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendTopusersGet@1449645536089.zip"
         },
         "Role": {
           "Ref": "aaLambdaRoleArn"
