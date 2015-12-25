@@ -8,6 +8,40 @@
     }
   },
   "Resources": {
+    "lBackendUpdateGroupsPost": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/updateGroups/post/handler.handler",
+        "MemorySize": 1536,
+        "Runtime": "nodejs",
+        "Timeout": 180,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUpdateGroupsPost@1451038037830.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
+    "lBackendUpdateGroupsOptions": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Description": "",
+        "Handler": "aws_modules/backend/updateGroups/options/handler.handler",
+        "MemorySize": 1024,
+        "Runtime": "nodejs",
+        "Timeout": 6,
+        "Code": {
+          "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUpdateGroupsOptions@1451029706735.zip"
+        },
+        "Role": {
+          "Ref": "aaLambdaRoleArn"
+        }
+      }
+    },
     "lBackendUpdateScoresPost": {
       "Type": "AWS::Lambda::Function",
       "Properties": {

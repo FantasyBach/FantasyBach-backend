@@ -17,6 +17,7 @@ var facebookProfile;
 var awsCredentials;
 var picks;
 var scores;
+var groups;
 var fb;
 
 // Export For Lambda Handler
@@ -81,7 +82,7 @@ var updateUser = function(callback) {
     dynamodbDoc.update({
         TableName : process.env.USERS_TABLE,
         Key : { id : userId },
-        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username, #picks=if_not_exists(#picks, :picks), #scores=if_not_exists(#scores, :scores), #isAdmin=if_not_exists(#isAdmin, :isAdmin)',
+        UpdateExpression : 'SET #facebookId=:facebookId, #email=:email, #profilePicture=:profilePicture, #name=:username, #picks=if_not_exists(#picks, :picks), #scores=if_not_exists(#scores, :scores), #groups=if_not_exists(#groups, :groups), #isAdmin=if_not_exists(#isAdmin, :isAdmin)',
         ExpressionAttributeNames : {
             '#facebookId' : 'facebookId',
             '#email' : 'email',
@@ -89,6 +90,7 @@ var updateUser = function(callback) {
             '#name' : 'name',
             '#picks' : 'picks',
             '#scores' : 'scores',
+            '#groups' : 'groups',
             '#isAdmin' : 'isAdmin'
         },
         ExpressionAttributeValues : {
@@ -98,6 +100,7 @@ var updateUser = function(callback) {
             ':username' : facebookProfile.name,
             ':picks' : picks,
             ':scores' : scores,
+            ':groups' : groups,
             ':isAdmin' : false
         }
     }, callback);
@@ -143,9 +146,11 @@ var action = function(token, done) {
             facebookProfile = data.profile;
             picks = {};
             scores = {};
+            groups = {};
             _.each(data.rounds, function(round) {
                 if (!picks[round.seasonId]) { picks[round.seasonId] = {}; }
                 if (!scores[round.seasonId]) { scores[round.seasonId] = { score : 0 }; }
+                if (!groups[round.seasonId]) { groups[round.seasonId] = []; }
                 picks[round.seasonId][round.id] = {};
                 scores[round.seasonId][round.id] = 0;
             });
