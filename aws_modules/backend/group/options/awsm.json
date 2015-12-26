@@ -1,11 +1,6 @@
 {
   "lambda": {
-    "envVars": [
-      "AWS_ACCOUNT_ID",
-      "COGNITO_IDENTITY_POOL_ID",
-      "USERS_TABLE",
-      "ROUNDS_TABLE"
-    ],
+    "envVars": [],
     "deploy": false,
     "package": {
       "optimize": {
@@ -15,16 +10,14 @@
         "exclude": [
           "aws-sdk"
         ],
-        "includePaths": [
-          "node_modules/aws-sdk"
-        ]
+        "includePaths": []
       },
       "excludePatterns": []
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/login/get/handler.handler",
-      "MemorySize": 1536,
+      "Handler": "aws_modules/backend/group/options/handler.handler",
+      "MemorySize": 1024,
       "Runtime": "nodejs",
       "Timeout": 6
     }
@@ -33,26 +26,18 @@
     "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "login",
-      "Method": "GET",
+      "Path": "season/{seasonId}/group",
+      "Method": "OPTIONS",
       "AuthorizationType": "none",
       "ApiKeyRequired": false,
-      "RequestTemplates": {
-        "application/json": "{\"token\":\"$util.urlDecode($input.params('token'))\"}"
-      },
-      "RequestParameters": {
-        "integration.request.querystring.integrationQueryParam": "method.request.querystring.token"
-      },
+      "RequestTemplates": {},
+      "RequestParameters": {},
       "Responses": {
-        "400": {
-          "statusCode": "400",
-          "responseParameters": {
-            "method.response.header.Access-Control-Allow-Origin": "'*'"
-          }
-        },
         "default": {
           "statusCode": "200",
           "responseParameters": {
+            "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-amz-security-token'",
+            "method.response.header.Access-Control-Allow-Methods": "'GET,POST,DELETE,OPTIONS'",
             "method.response.header.Access-Control-Allow-Origin": "'*'"
           },
           "responseModels": {},

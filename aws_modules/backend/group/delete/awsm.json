@@ -1,7 +1,10 @@
 {
   "lambda": {
     "envVars": [
-      "USERS_TABLE"
+      "USERS_TABLE",
+      "GROUPS_TABLE",
+      "FB_APP_ID",
+      "FB_APP_SECRET"
     ],
     "deploy": false,
     "package": {
@@ -20,7 +23,7 @@
     },
     "cloudFormation": {
       "Description": "",
-      "Handler": "aws_modules/backend/user/get/handler.handler",
+      "Handler": "aws_modules/backend/group/delete/handler.handler",
       "MemorySize": 1536,
       "Runtime": "nodejs",
       "Timeout": 6
@@ -30,17 +33,15 @@
     "deploy": false,
     "cloudFormation": {
       "Type": "AWS",
-      "Path": "season/{seasonId}/user",
-      "Method": "GET",
+      "Path": "season/{seasonId}/group",
+      "Method": "DELETE",
       "AuthorizationType": "AWS_IAM",
       "ApiKeyRequired": false,
       "RequestTemplates": {
-        "application/json": "{\"seasonId\":\"$util.urlDecode($input.params('seasonId'))\", \"id\":\"$util.urlDecode($input.params('id'))\", \"ids\":\"$util.urlDecode($input.params('ids'))\", \"userId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityId)\"}"
+        "application/json": "{\"seasonId\":\"$util.urlDecode($input.params('seasonId'))\", \"body\":$input.json('$'), \"userId\":\"$util.escapeJavaScript($context.identity.cognitoIdentityId)\"}"
       },
       "RequestParameters": {
-        "integration.request.path.seasonId": "method.request.path.seasonId",
-        "integration.request.querystring.id": "method.request.querystring.id",
-        "integration.request.querystring.ids": "method.request.querystring.ids"
+        "integration.request.path.seasonId": "method.request.path.seasonId"
       },
       "Responses": {
         "400": {

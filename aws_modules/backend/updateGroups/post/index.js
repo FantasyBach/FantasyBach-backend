@@ -69,11 +69,12 @@ var _scanGroups = function(startKey, callback) {
     var params = startKey ? { ExclusiveStartKey : startKey } : {};
     return dynamodbDoc.scan(_.assign(params, {
         TableName : process.env.GROUPS_TABLE,
-        ProjectionExpression : '#facebookId, #seasonId, #memberFacebookIds',
+        ProjectionExpression : '#facebookId, #seasonId, #memberFacebookIds, #adminId',
         ExpressionAttributeNames : {
             '#facebookId' : 'facebookId',
             '#seasonId' : 'seasonId',
-            '#memberFacebookIds' : 'memberFacebookIds'
+            '#memberFacebookIds' : 'memberFacebookIds',
+            '#adminId' : 'adminId'
         }
     }), function(err, data) {
         if (err) { callback(err); }
@@ -133,13 +134,14 @@ var deleteGroup = function(groupFacebookId, seasonId, callback) {
     }, callback);
 };
 
-var putGroup = function(groupFacebookId, seasonId, memberFacebookIds, callback) {
+var putGroup = function(groupFacebookId, seasonId, memberFacebookIds, adminId, callback) {
     dynamodbDoc.put({
         TableName : process.env.GROUPS_TABLE,
         Item : {
             facebookId : groupFacebookId,
             seasonId : seasonId,
-            memberFacebookIds : memberFacebookIds
+            memberFacebookIds : memberFacebookIds,
+            adminId : adminId
         }
     }, callback);
 };
@@ -179,7 +181,7 @@ var action = function(done) {
             if (!memberGroups[memberId][group.seasonId]) { memberGroups[memberId][group.seasonId] = []; }
             memberGroups[memberId][group.seasonId].push(group.facebookId);
             memberGroups[memberId][group.seasonId] = _.sortBy(memberGroups[memberId][group.seasonId]);
-            defaultGroups[group.seasonId] = {};
+            defaultGroups[group.seasonId] = [];
         });
 
         if (!_.has(groupMembers, group.facebookId)) {
@@ -191,7 +193,7 @@ var action = function(done) {
             return callback();
         }
 
-        putGroup(group.facebookId, group.seasonId, newMemberIds, callback);
+        putGroup(group.facebookId, group.seasonId, newMemberIds, group.adminId, callback);
     }, 8);
 
     var usersScanQueue = async.queue(function(user, callback) {

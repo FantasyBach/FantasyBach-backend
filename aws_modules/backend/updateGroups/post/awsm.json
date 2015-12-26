@@ -1,9 +1,10 @@
 {
   "lambda": {
     "envVars": [
-      "ROUNDS_TABLE",
       "USERS_TABLE",
-      "GROUPS_TABLE"
+      "GROUPS_TABLE",
+      "FB_APP_ID",
+      "FB_APP_SECRET"
     ],
     "deploy": true,
     "package": {
