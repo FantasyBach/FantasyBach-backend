@@ -134,6 +134,12 @@ var deleteGroup = function(groupFacebookId, seasonId, callback) {
     }, callback);
 };
 
+var deleteGroupFacebook = function(groupId, callback) {
+    fb.post('/' + appId + '/groups/' + groupId, {
+        method : 'DELETE'
+    }, callback);
+};
+
 var putGroup = function(groupFacebookId, seasonId, memberFacebookIds, adminId, callback) {
     dynamodbDoc.put({
         TableName : process.env.GROUPS_TABLE,
@@ -184,8 +190,14 @@ var action = function(done) {
             defaultGroups[group.seasonId] = [];
         });
 
-        if (!_.has(groupMembers, group.facebookId)) {
-            return deleteGroup(group.facebookId, group.seasonId, callback);
+        if (!_.has(groupMembers, group.facebookId) || groupMembers[group.facebookId].length == 0) {
+            deleteGroup(group.facebookId, group.seasonId, function(err) {
+                if (err) { return callback(err); }
+                deleteGroupFacebook(group.facebookId, function(err) {
+                    if (err) { callback(new Error(err)); }
+                    callback();
+                });
+            });
         }
 
         if (isUnorderedEqual(group.memberFacebookIds, newMemberIds)) {

@@ -18,7 +18,7 @@
         "Timeout": 180,
         "Code": {
           "S3Bucket": "jaws.dev.useast1.api.fantasybach.com",
-          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUpdateGroupsPost@1451119944954.zip"
+          "S3Key": "JAWS/fantasybach-backend/dev/lambdas/lBackendUpdateGroupsPost@1451122000988.zip"
         },
         "Role": {
           "Ref": "aaLambdaRoleArn"

@@ -64,9 +64,6 @@ var queryUser = function(facebookId, seasonId, callback) {
         if (user.scores) {
             user.scores = user.scores[seasonId];
         }
-        if (user.groups) {
-            user.groups = user.groups[seasonId];
-        }
         callback(null, user);
     });
 };
