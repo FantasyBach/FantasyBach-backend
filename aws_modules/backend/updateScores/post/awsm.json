@@ -5,9 +5,10 @@
       "USERS_TABLE",
       "CONTESTANTS_TABLE",
       "ROLES_TABLE",
-      "TOP_USERS_TABLE"
+      "TOP_USERS_TABLE",
+      "CURRENT_SEASON"
     ],
-    "deploy": false,
+    "deploy": true,
     "package": {
       "optimize": {
         "builder": "browserify",

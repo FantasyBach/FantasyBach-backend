@@ -19,7 +19,7 @@
       "Handler": "aws_modules/backend/prepareRound/options/handler.handler",
       "MemorySize": 1024,
       "Runtime": "nodejs",
-      "Timeout": 6
+      "Timeout": 10
     }
   },
   "apiGateway": {

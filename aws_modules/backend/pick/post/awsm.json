@@ -24,7 +24,7 @@
       "Handler": "aws_modules/backend/pick/post/handler.handler",
       "MemorySize": 1536,
       "Runtime": "nodejs",
-      "Timeout": 6
+      "Timeout": 10
     }
   },
   "apiGateway": {

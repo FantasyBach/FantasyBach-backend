@@ -26,7 +26,7 @@
       "Handler": "aws_modules/backend/group/get/handler.handler",
       "MemorySize": 1536,
       "Runtime": "nodejs",
-      "Timeout": 6
+      "Timeout": 10
     }
   },
   "apiGateway": {

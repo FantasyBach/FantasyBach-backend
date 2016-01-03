@@ -6,7 +6,7 @@
       "FB_APP_ID",
       "FB_APP_SECRET"
     ],
-    "deploy": true,
+    "deploy": false,
     "package": {
       "optimize": {
         "builder": "browserify",

@@ -16,7 +16,7 @@ var userId;
 module.exports.run = function(event, context, done) {
     console.log('New event:');
     console.log(event);
-    seasonId = event.seasonId;
+    seasonId = event.seasonId || process.env.CURRENT_SEASON;
     userId = event.userId;
     action(done);
 };
