@@ -15,7 +15,7 @@
   },
   "endpoints": [
     {
-      "path": "season/{seasonId}/rounds",
+      "path": "season/{seasonId}/round",
       "method": "GET",
       "type": "AWS",
       "authorizationType": "AWS_IAM",
@@ -33,7 +33,7 @@
       }
     },
     {
-      "path": "season/{seasonId}/rounds",
+      "path": "season/{seasonId}/round",
       "method": "OPTIONS",
       "type": "MOCK",
       "requestTemplates": "$${corsOptionsRequestTemplate}",

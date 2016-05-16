@@ -63,11 +63,12 @@ var action = function(userId, seasonId, leagueId, done) {
     getLeague(seasonId, leagueId, function(err, league) {
         if (err) { return done(err); }
         if (_includes(league.memberIds, userId)) { return done('User already in league: ' + leagueId)}
+        league.memberIds.push(userId);
         updateLeague(userId, seasonId, leagueId, function(err) {
             if (err) { return done(err); }
             updateUser(userId, seasonId, leagueId, function(err) {
                 if (err) { return done(err); }
-                done(null, leagueId);
+                done(null, league);
             });
         });
     });

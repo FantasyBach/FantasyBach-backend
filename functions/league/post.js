@@ -6,7 +6,7 @@ var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
 // Export For Lambda Handler
 module.exports.handler = function(userId, pathParams, queryParams, body, done) {
-    if (!body.leagueName) { done('No leagueName parameter provided'); }
+    if (!body.leagueName) { return done('No leagueName parameter provided'); }
     return action(userId, pathParams.seasonId, body.leagueName, done);
 };
 

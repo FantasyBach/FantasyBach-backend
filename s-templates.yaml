@@ -62,3 +62,14 @@
       responseModels: {}
       responseTemplates:
         application/json: ""
+  receiverRequestTemplate:
+    application/json:
+      statusCode: 200
+  receiverResponseTemplate:
+    default:
+      statusCode: "200"
+      responseParameters: {}
+      responseModels:
+        text/html: "Empty"
+      responseTemplates:
+        text/html: "<!DOCTYPE html><body><script>document.domain='fantasybach.com'</script></body></html>"

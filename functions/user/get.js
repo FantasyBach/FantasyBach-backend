@@ -114,7 +114,7 @@ var action = function(seasonId, userId, id, ids, done) {
                 if (err) { return done(err); }
                 getTopUsers(seasonId, function(err, topUsers) {
                     if (err) { return done(err); }
-                    leagues.push({
+                    leagues.unshift({
                         name : 'global leaderboard',
                         id : 'global',
                         memberIds : topUsers
