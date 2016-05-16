@@ -50,12 +50,12 @@ var action = function(seasonId, userId, id, ids, done) {
     }
     if (!id) {
         id = userId;
-        projectionParams.ProjectionExpression += ', #email, #name, #facebookId, #groups.#seasonId';
+        projectionParams.ProjectionExpression += ', #email, #name, #facebookId, #leagues.#seasonId';
         _extend(projectionParams.ExpressionAttributeNames, {
             '#email' : 'email',
             '#name' : 'name',
             '#facebookId' : 'facebookId',
-            '#groups' : 'groups'
+            '#leagues' : 'leagues'
         });
     }
     return dynamodbDoc.get(_assign(projectionParams, {
@@ -71,8 +71,8 @@ var action = function(seasonId, userId, id, ids, done) {
         if (data.Item.scores) {
             data.Item.scores = data.Item.scores[seasonId];
         }
-        if (data.Item.groups) {
-            data.Item.groups = data.Item.groups[seasonId];
+        if (data.Item.leagues) {
+            data.Item.leagues = data.Item.leagues[seasonId];
         }
         done(null, data.Item);
     });
