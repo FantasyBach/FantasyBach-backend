@@ -1,7 +1,7 @@
 {
-  "name": "user",
+  "name": "nickname",
   "runtime": "nodejs4.3",
-  "description": "methods for working with users",
+  "description": "methods for working with a user's nickname",
   "customName": false,
   "customRole": false,
   "handler": "handler.handler",
@@ -15,17 +15,13 @@
   },
   "endpoints": [
     {
-      "path": "season/{seasonId}/user",
-      "method": "GET",
+      "path": "nickname",
+      "method": "POST",
       "type": "AWS",
       "authorizationType": "AWS_IAM",
       "authorizerFunction": false,
       "apiKeyRequired": false,
-      "requestParameters": {
-        "integration.request.path.seasonId": "method.request.path.seasonId",
-        "integration.request.querystring.id": "method.request.querystring.id",
-        "integration.request.querystring.ids": "method.request.querystring.ids"
-      },
+      "requestParameters": {},
       "requestTemplates": "$${authenticatedTemplate}",
       "responses": {
         "400": "$${default400ResponseTemplate}",
@@ -33,7 +29,7 @@
       }
     },
     {
-      "path": "season/{seasonId}/user",
+      "path": "nickname",
       "method": "OPTIONS",
       "type": "MOCK",
       "requestTemplates": "$${corsOptionsRequestTemplate}",

@@ -1,7 +1,7 @@
 {
-  "name": "user",
+  "name": "pick",
   "runtime": "nodejs4.3",
-  "description": "methods for working with users",
+  "description": "methods for working with a user's picks",
   "customName": false,
   "customRole": false,
   "handler": "handler.handler",
@@ -15,16 +15,15 @@
   },
   "endpoints": [
     {
-      "path": "season/{seasonId}/user",
-      "method": "GET",
+      "path": "season/{seasonId}/round/{roundId}/pick",
+      "method": "POST",
       "type": "AWS",
       "authorizationType": "AWS_IAM",
       "authorizerFunction": false,
       "apiKeyRequired": false,
       "requestParameters": {
         "integration.request.path.seasonId": "method.request.path.seasonId",
-        "integration.request.querystring.id": "method.request.querystring.id",
-        "integration.request.querystring.ids": "method.request.querystring.ids"
+        "integration.request.path.roundId": "method.request.path.roundId"
       },
       "requestTemplates": "$${authenticatedTemplate}",
       "responses": {
@@ -33,7 +32,24 @@
       }
     },
     {
-      "path": "season/{seasonId}/user",
+      "path": "season/{seasonId}/round/{roundId}/pick",
+      "method": "DELETE",
+      "type": "AWS",
+      "authorizationType": "AWS_IAM",
+      "authorizerFunction": false,
+      "apiKeyRequired": false,
+      "requestParameters": {
+        "integration.request.path.seasonId": "method.request.path.seasonId",
+        "integration.request.path.roundId": "method.request.path.roundId"
+      },
+      "requestTemplates": "$${authenticatedTemplate}",
+      "responses": {
+        "400": "$${default400ResponseTemplate}",
+        "default": "$${default200ResponseTemplate}"
+      }
+    },
+    {
+      "path": "season/{seasonId}/round/{roundId}/pick",
       "method": "OPTIONS",
       "type": "MOCK",
       "requestTemplates": "$${corsOptionsRequestTemplate}",
@@ -42,7 +58,8 @@
   ],
   "events": [],
   "environment": {
-    "USERS_TABLE": "${users-table}"
+    "USERS_TABLE": "${users-table}",
+    "ROUNDS_TABLE": "${rounds-table}"
   },
   "vpc": {
     "securityGroupIds": [],
