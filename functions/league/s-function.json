@@ -1,7 +1,7 @@
 {
-  "name": "user",
+  "name": "league",
   "runtime": "nodejs4.3",
-  "description": "methods for working with users",
+  "description": "methods for working with leagues",
   "customName": false,
   "customRole": false,
   "handler": "handler.handler",
@@ -15,16 +15,14 @@
   },
   "endpoints": [
     {
-      "path": "season/{seasonId}/user",
-      "method": "GET",
+      "path": "season/{seasonId}/league",
+      "method": "POST",
       "type": "AWS",
       "authorizationType": "AWS_IAM",
       "authorizerFunction": false,
       "apiKeyRequired": false,
       "requestParameters": {
-        "integration.request.path.seasonId": "method.request.path.seasonId",
-        "integration.request.querystring.id": "method.request.querystring.id",
-        "integration.request.querystring.ids": "method.request.querystring.ids"
+        "integration.request.path.seasonId": "method.request.path.seasonId"
       },
       "requestTemplates": "$${authenticatedTemplate}",
       "responses": {
@@ -33,7 +31,7 @@
       }
     },
     {
-      "path": "season/{seasonId}/user",
+      "path": "season/{seasonId}/league",
       "method": "OPTIONS",
       "type": "MOCK",
       "requestTemplates": "$${corsOptionsRequestTemplate}",
@@ -42,9 +40,8 @@
   ],
   "events": [],
   "environment": {
-    "USERS_TABLE": "${users-table}",
     "LEAGUES_TABLE": "${leagues-table}",
-    "TOP_USERS_TABLE": "${top-users-table}"
+    "USERS_TABLE": "${users-table}"
   },
   "vpc": {
     "securityGroupIds": [],

@@ -12,6 +12,44 @@ module.exports.handler = function(userId, pathParams, queryParams, body, done) {
     return action(pathParams.seasonId, userId, queryParams.id, queryParams.ids, done);
 };
 
+var getLeagues = function(seasonId, leagueIds, done) {
+    var params = {
+        RequestItems : {}
+    };
+    params.RequestItems[process.env.LEAGUES_TABLE] = {
+        ProjectionExpression : '#id, #adminId, #memberIds, #name',
+        ExpressionAttributeNames : {
+            '#id' : 'id',
+            '#adminId' : 'adminId',
+            '#memberIds' : 'memberIds',
+            '#name' : 'name'
+        },
+        Keys : _map(leagueIds, function(leagueId) {
+            return {
+                id : leagueId,
+                seasonId : seasonId
+            }
+        })
+    };
+    return dynamodbDoc.batchGet(params, function(err, data) {
+        if (err) { return done(err); }
+        done(null, data.Responses[process.env.LEAGUES_TABLE]);
+    });
+};
+
+var getTopUsers = function(seasonId, callback) {
+    return dynamodbDoc.query({
+        TableName : process.env.TOP_USERS_TABLE,
+        KeyConditionExpression: 'seasonId = :seasonId',
+        ExpressionAttributeValues: {
+            ':seasonId': seasonId
+        }
+    }, function(err, data) {
+        if (err) { return callback(err); }
+        callback(null, data.Items);
+    });
+};
+
 var action = function(seasonId, userId, id, ids, done) {
     var projectionParams = {
         ProjectionExpression : '#id, #nickname, #profilePicture, #picks.#seasonId, #scores.#seasonId',
@@ -72,7 +110,19 @@ var action = function(seasonId, userId, id, ids, done) {
             data.Item.scores = data.Item.scores[seasonId];
         }
         if (data.Item.leagues) {
-            data.Item.leagues = data.Item.leagues[seasonId];
+            return getLeagues(seasonId, data.Item.leagues[seasonId], function(err, leagues) {
+                if (err) { return done(err); }
+                getTopUsers(seasonId, function(err, topUsers) {
+                    if (err) { return done(err); }
+                    leagues.push({
+                        name : 'global leaderboard',
+                        id : 'global',
+                        memberIds : topUsers
+                    });
+                    data.Item.leagues = leagues;
+                    done(null, data.Item);
+                });
+            });
         }
         done(null, data.Item);
     });
