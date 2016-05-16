@@ -1,0 +1,6 @@
+{
+  "region": "us-east-1",
+  "resourcesStackName": "FantasyBach-backend-dev-r",
+  "iamRoleArnLambda": "arn:aws:iam::977273028392:role/FantasyBach-backend-dev-r-IamRoleLambda-14QIPCRBPJC9R",
+  "apiGatewayApi": "FantasyBach-backend"
+}

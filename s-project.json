@@ -1,0 +1,8 @@
+{
+  "name": "FantasyBach-backend",
+  "custom": {},
+  "plugins": [
+    "serverless-optimizer-plugin"
+  ],
+  "domain": "api.fantasybach.com"
+}

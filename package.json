@@ -1,21 +1,18 @@
 {
-  "name": "fantasybach-backend",
+  "name": "FantasyBach-backend",
   "version": "0.0.1",
-  "description": "A JAWS application",
+  "description": "A Serverless Project and its Serverless Plugin dependencies.",
   "author": "me",
-  "license": "",
+  "license": "MIT",
   "private": false,
   "repository": {
     "type": "git",
     "url": "git://github.com/"
   },
-  "keywords": [],
-  "devDependencies": {},
   "dependencies": {
-    "async": "^1.5.0",
-    "aws-sdk": "^2.2.18",
+    "async": "^1.5.2",
     "fbgraphapi": "^0.5.0",
-    "jaws-core-js": "~0.0.2",
-    "lodash": "^3.10.1"
+    "lodash": "^4.12.0",
+    "serverless-optimizer-plugin": "^2.5.1"
   }
 }

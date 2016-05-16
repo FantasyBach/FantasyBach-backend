@@ -1,0 +1,54 @@
+{
+  "name": "user",
+  "runtime": "nodejs4.3",
+  "description": "methods for working with users",
+  "customName": false,
+  "customRole": false,
+  "handler": "handler.handler",
+  "timeout": 10,
+  "memorySize": 1536,
+  "authorizer": {},
+  "custom": {
+    "optimize": {
+      "exclude": ["aws-sdk"]
+    }
+  },
+  "endpoints": [
+    {
+      "path": "season/{seasonId}/user",
+      "method": "GET",
+      "type": "AWS",
+      "authorizationType": "AWS_IAM",
+      "authorizerFunction": false,
+      "apiKeyRequired": false,
+      "requestParameters": {
+        "integration.request.path.seasonId": "method.request.path.seasonId",
+        "integration.request.querystring.id": "method.request.querystring.id",
+        "integration.request.querystring.ids": "method.request.querystring.ids"
+      },
+      "requestTemplates": "$${authenticatedTemplate}",
+      "responses": {
+        "400": "$${default400ResponseTemplate}",
+        "default": "$${default200ResponseTemplate}"
+      }
+    },
+    {
+      "path": "season/{seasonId}/user",
+      "method": "OPTIONS",
+      "type": "MOCK",
+      "requestTemplates": "$${corsOptionsRequestTemplate}",
+      "responses": "$${corsOptionsResponseTemplate}"
+    }
+  ],
+  "events": [],
+  "environment": {
+    "SERVERLESS_PROJECT": "${project}",
+    "SERVERLESS_STAGE": "${stage}",
+    "SERVERLESS_REGION": "${region}",
+    "USERS_TABLE": "${users-table}"
+  },
+  "vpc": {
+    "securityGroupIds": [],
+    "subnetIds": []
+  }
+}

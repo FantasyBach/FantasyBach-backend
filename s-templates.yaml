@@ -1,0 +1,64 @@
+---
+  authenticatedTemplate:
+    application/json: |
+      {
+        "body" : $input.json('$'),
+        "method": "$context.httpMethod",
+        "pathParams": {
+          #foreach($param in $input.params().path.keySet())
+          "$param": "$util.escapeJavaScript($input.params().path.get($param))" #if($foreach.hasNext),#end
+
+          #end
+        },
+        "queryParams": {
+          #foreach($queryParam in $input.params().querystring.keySet())
+          "$queryParam": "$util.escapeJavaScript($input.params().querystring.get($queryParam))" #if($foreach.hasNext),#end
+
+          #end
+        },
+        "userId": "$util.escapeJavaScript($context.identity.cognitoIdentityId)"
+      }
+  unauthenticatedTemplate:
+    application/json: |
+      {
+        "body" : $input.json('$'),
+        "method": "$context.httpMethod",
+        "pathParams": {
+          #foreach($param in $input.params().path.keySet())
+          "$param": "$util.escapeJavaScript($input.params().path.get($param))" #if($foreach.hasNext),#end
+
+          #end
+        },
+        "queryParams": {
+          #foreach($queryParam in $input.params().querystring.keySet())
+          "$queryParam": "$util.escapeJavaScript($input.params().querystring.get($queryParam))" #if($foreach.hasNext),#end
+
+          #end
+        }
+      }
+  default200ResponseTemplate:
+    statusCode: "200"
+    responseParameters:
+      method.response.header.Access-Control-Allow-Origin: "'*'"
+    responseModels: {}
+    responseTemplates:
+      application/json: ""
+  default400ResponseTemplate:
+    statusCode: "400"
+    responseTemplates:
+      application/json: ""
+    responseParameters:
+      method.response.header.Access-Control-Allow-Origin: "'*'"
+  corsOptionsRequestTemplate:
+    application/json:
+      statusCode: 200
+  corsOptionsResponseTemplate:
+    default:
+      statusCode: "200"
+      responseParameters:
+        method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,x-amz-security-token'"
+        method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS,HEAD,DELETE,PATCH,POST,PUT'"
+        method.response.header.Access-Control-Allow-Origin: "'*'"
+      responseModels: {}
+      responseTemplates:
+        application/json: ""

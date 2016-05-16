@@ -5,7 +5,7 @@ After you have installed jaws, you still need to:
 1. Create admin.env
 https://github.com/jaws-framework/JAWS/blob/master/docs/project_structure.md
 ```
-echo "ADMIN_AWS_PROFILE=fantasybach" > admin.env
+echo "ADMIN_AWS_PROFILE=fantasy-bach" > admin.env
 ```
 
 2. Create .env
