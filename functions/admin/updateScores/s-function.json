@@ -1,0 +1,30 @@
+{
+  "name": "admin-updateScores",
+  "runtime": "nodejs4.3",
+  "description": "methods for updating user scores and calculating leaderboard",
+  "customName": false,
+  "customRole": false,
+  "handler": "handler.handler",
+  "timeout": 50,
+  "memorySize": 1536,
+  "authorizer": {},
+  "custom": {
+    "optimize": {
+      "exclude": ["aws-sdk"]
+    }
+  },
+  "endpoints": [],
+  "events": [],
+  "environment": {
+    "USERS_TABLE": "${users-table}",
+    "CONTESTANTS_TABLE": "${contestants-table}",
+    "ROUNDS_TABLE": "${rounds-table}",
+    "ROLES_TABLE": "${roles-table}",
+    "TOP_USERS_TABLE": "${top-users-table}",
+    "CURRENT_SEASON": "${current-season}"
+  },
+  "vpc": {
+    "securityGroupIds": [],
+    "subnetIds": []
+  }
+}
