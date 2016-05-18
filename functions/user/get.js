@@ -118,7 +118,7 @@ var action = function(seasonId, userId, id, ids, done) {
                     leagues.unshift({
                         name : 'global leaderboard',
                         id : 'global',
-                        memberIds : topUsers
+                        memberIds : _map(topUsers, 'id')
                     });
                     data.Item.leagues = leagues;
                     done(null, data.Item);

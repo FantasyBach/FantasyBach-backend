@@ -13,7 +13,7 @@
     "async": "^1.5.2",
     "fbgraphapi": "^0.5.0",
     "lodash": "^4.12.0",
-    "moment-timezone": "^0.5.4",
+    "moment": "^2.13.0",
     "serverless-optimizer-plugin": "^2.5.1",
     "shortid": "^2.2.6"
   }

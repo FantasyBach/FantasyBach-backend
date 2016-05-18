@@ -2,11 +2,9 @@
 
 var _contains = require('lodash/contains');
 var _each = require('lodash/each');
-var moment = require('moment-timezone');
+var moment = require('moment');
 var AWS = require('aws-sdk');
 var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
-
-var TIME_ZONE = 'America/Los_Angeles';
 
 // Export For Lambda Handler
 module.exports.handler = function(userId, pathParams, queryParams, body, done) {
@@ -59,10 +57,10 @@ var updatePick = function(userId, seasonId, round, contestantId, roleId, callbac
 var action = function(userId, seasonId, roundId, contestantId, roleId, done) {
     getRound(roundId, function(err, round) {
         if (err) { return done(err); }
-        if (moment.tz(round.startVoteLocalDateTime, TIME_ZONE).diff(new Date()) > 0) {
+        if (moment(round.startVoteDateTime).diff(new Date()) > 0) {
             return done(new Error('Round not open for voting yet'));
         }
-        if (moment.tz(round.endVoteLocalDateTime, TIME_ZONE).diff(new Date()) < 0) {
+        if (moment(round.endVoteDateTime).diff(new Date()) < 0) {
             return done(new Error('Round now closed for voting'));
         }
         if (!_contains(round.eligibleContestantIds, contestantId)) {
