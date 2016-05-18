@@ -3,7 +3,7 @@
 var postHandler = require('./post').handler;
 var deleteHandler = require('./delete').handler;
 
-module.exports.handler = function(event, context, callback) {
+module.exports.handler = function(event, context, callback) { 
     var userId = event.userId;
     var body = event.body;
     var pathParams = event.pathParams;

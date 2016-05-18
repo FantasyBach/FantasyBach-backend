@@ -2,7 +2,8 @@
 
 var getHandler = require('./get').handler;
 
-module.exports.handler = function(event, context, callback) {
+module.exports.handler = function(event, context, callback) { 
+    if (event.keepWarm) { return console.log('keeping warm'); }
     var userId = event.userId;
     var body = event.body;
     var pathParams = event.pathParams;
