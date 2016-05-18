@@ -16,10 +16,12 @@ var getLeague = function(seasonId, leagueId, callback) {
             id : leagueId,
             seasonId : seasonId
         },
-        ProjectionExpression : '#id, #memberIds',
+        ProjectionExpression : '#id, #memberIds, #adminId, #name',
         ExpressionAttributeNames : {
             '#id' : 'id',
-            '#memberIds' : 'memberIds'
+            '#memberIds' : 'memberIds',
+            '#adminId' : 'adminId',
+            '#name' : 'name'
         }
     }, function(err, data) {
         if (err) { return callback(err); }

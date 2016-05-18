@@ -13,6 +13,7 @@ module.exports.handler = function(userId, pathParams, queryParams, body, done) {
 };
 
 var getLeagues = function(seasonId, leagueIds, done) {
+    if (!leagueIds || leagueIds.length <= 0) { return done(null, []); }
     var params = {
         RequestItems : {}
     };
