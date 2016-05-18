@@ -1,0 +1,51 @@
+{
+  "name": "admin-prepareRound",
+  "runtime": "nodejs4.3",
+  "description": "methods for preparing rounds",
+  "customName": false,
+  "customRole": false,
+  "handler": "handler.handler",
+  "timeout": 10,
+  "memorySize": 1536,
+  "authorizer": {},
+  "custom": {
+    "optimize": {
+      "exclude": ["aws-sdk"]
+    }
+  },
+  "endpoints": [
+    {
+      "path": "season/{seasonId}/admin/prepareRound",
+      "method": "POST",
+      "type": "AWS",
+      "authorizationType": "AWS_IAM",
+      "authorizerFunction": false,
+      "apiKeyRequired": false,
+      "requestParameters": {
+        "integration.request.path.seasonId": "method.request.path.seasonId"
+      },
+      "requestTemplates": "$${authenticatedTemplate}",
+      "responses": {
+        "400": "$${default400ResponseTemplate}",
+        "default": "$${default200ResponseTemplate}"
+      }
+    },
+    {
+      "path": "season/{seasonId}/admin/prepareRound",
+      "method": "OPTIONS",
+      "type": "MOCK",
+      "requestTemplates": "$${corsOptionsRequestTemplate}",
+      "responses": "$${corsOptionsResponseTemplate}"
+    }
+  ],
+  "events": [],
+  "environment": {
+    "USERS_TABLE": "${users-table}",
+    "CONTESTANTS_TABLE": "${contestants-table}",
+    "ROUNDS_TABLE": "${rounds-table}"
+  },
+  "vpc": {
+    "securityGroupIds": [],
+    "subnetIds": []
+  }
+}
