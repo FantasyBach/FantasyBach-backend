@@ -10,7 +10,7 @@ module.exports.handler = function(event, context, callback) {
     var queryParams = event.queryParams;
     switch (event.method) {
         case "POST" : return postHandler(userId, pathParams, queryParams, body, callback);
-        case "DELETE" : return postHandler(userId, pathParams, queryParams, body, callback);
+        case "DELETE" : return deleteHandler(userId, pathParams, queryParams, body, callback);
         default : return callback(null, 'Unsupported method: ' + event.method);
     }
 };

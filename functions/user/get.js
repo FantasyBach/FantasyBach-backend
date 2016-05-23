@@ -53,10 +53,11 @@ var getTopUsers = function(seasonId, callback) {
 
 var action = function(seasonId, userId, id, ids, done) {
     var projectionParams = {
-        ProjectionExpression : '#id, #nickname, #profilePicture, #picks.#seasonId, #scores.#seasonId',
+        ProjectionExpression : '#id, #nickname, #name, #profilePicture, #picks.#seasonId, #scores.#seasonId',
         ExpressionAttributeNames : {
             '#id' : 'id',
             '#nickname' : 'nickname',
+            '#name' : 'name',
             '#profilePicture' : 'profilePicture',
             '#picks' : 'picks',
             '#scores' : 'scores',
@@ -83,16 +84,17 @@ var action = function(seasonId, userId, id, ids, done) {
                 if (!user.picks || !user.scores) { return; }
                 user.picks = user.picks[seasonId];
                 user.scores = user.scores[seasonId];
+                user.nickname = user.nickname || user.name;
+                delete user.name;
             });
             done(null, users);
         });
     }
     if (!id) {
         id = userId;
-        projectionParams.ProjectionExpression += ', #email, #name, #facebookId, #leagues.#seasonId';
+        projectionParams.ProjectionExpression += ', #email, #facebookId, #leagues.#seasonId';
         _extend(projectionParams.ExpressionAttributeNames, {
             '#email' : 'email',
-            '#name' : 'name',
             '#facebookId' : 'facebookId',
             '#leagues' : 'leagues'
         });
@@ -104,14 +106,19 @@ var action = function(seasonId, userId, id, ids, done) {
         }
     }), function(err, data) {
         if (err) { return done(err); }
-        if (data.Item.picks) {
-            data.Item.picks = data.Item.picks[seasonId];
+        var user = data.Item;
+        if (user.picks) {
+            user.picks = user.picks[seasonId];
         }
-        if (data.Item.scores) {
-            data.Item.scores = data.Item.scores[seasonId];
+        if (user.scores) {
+            user.scores = user.scores[seasonId];
         }
-        if (data.Item.leagues) {
-            return getLeagues(seasonId, data.Item.leagues[seasonId], function(err, leagues) {
+        if (id !== userId) {
+            user.nickname = user.nickname || user.name;
+            delete user.name;
+        }
+        if (user.leagues) {
+            return getLeagues(seasonId, user.leagues[seasonId], function(err, leagues) {
                 if (err) { return done(err); }
                 getTopUsers(seasonId, function(err, topUsers) {
                     if (err) { return done(err); }
@@ -120,12 +127,12 @@ var action = function(seasonId, userId, id, ids, done) {
                         id : 'global',
                         memberIds : _map(topUsers, 'id')
                     });
-                    data.Item.leagues = leagues;
-                    done(null, data.Item);
+                    user.leagues = leagues;
+                    done(null, user);
                 });
             });
         }
-        done(null, data.Item);
+        done(null, user);
     });
 };
 

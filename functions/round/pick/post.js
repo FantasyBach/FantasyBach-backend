@@ -1,6 +1,6 @@
 'use strict';
 
-var _contains = require('lodash/contains');
+var _includes = require('lodash/includes');
 var _each = require('lodash/each');
 var moment = require('moment');
 var AWS = require('aws-sdk');
@@ -63,10 +63,10 @@ var action = function(userId, seasonId, roundId, contestantId, roleId, done) {
         if (moment(round.endVoteDateTime).diff(new Date()) < 0) {
             return done(new Error('Round now closed for voting'));
         }
-        if (!_contains(round.eligibleContestantIds, contestantId)) {
+        if (!_includes(round.eligibleContestantIds, contestantId)) {
             return done(new Error('Contestant not eligible for this round'));
         }
-        if (!_contains(round.availableRoleIds, roleId)) {
+        if (!_includes(round.availableRoleIds, roleId)) {
             return done(new Error('Role not eligible for this round'));
         }
         updatePick(userId, seasonId, round, contestantId, roleId, done);
