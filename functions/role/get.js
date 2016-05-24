@@ -1,6 +1,7 @@
 'use strict';
 
 var _map = require('lodash/map');
+var _orderBy = require('lodash/orderBy');
 var AWS = require('aws-sdk');
 var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
@@ -20,7 +21,7 @@ var action = function(seasonId, id, ids, done) {
             }
         }, function(err, data) {
             if (err) { return done(err); }
-            done(null, data.Items);
+            done(null, _orderBy(data.Items, 'occurrenceName'));
         });
     }
     ids = ids ? ids.split(',') : [id];
@@ -37,7 +38,7 @@ var action = function(seasonId, id, ids, done) {
     };
     return dynamodbDoc.batchGet(params, function(err, data) {
         if (err) { return done(err); }
-        done(null, data.Responses[process.env.ROLES_TABLE]);
+        done(null, _orderBy(data.Responses[process.env.ROLES_TABLE], 'occurrenceName'));
     })
 };
 

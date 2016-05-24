@@ -1,6 +1,9 @@
 'use strict';
 
 var AWS = require('aws-sdk');
+var _find = require('lodash/find');
+var _map = require('lodash/map');
+var _difference = require('lodash/difference');
 var dynamodbDoc = new AWS.DynamoDB.DocumentClient();
 
 // Export For Lambda Handler
@@ -79,16 +82,16 @@ var action = function(userId, seasonId, roundId, done) {
         getRounds(seasonId, function(err, rounds) {
             if (err) { return done(err); }
 
-            var round = _.find(rounds, 'id', roundId);
+            var round = _find(rounds, { id : roundId});
             if (round.index === 0) {
                 return getContestants(seasonId, function(err, contestants) {
                     if (err) { return done(err); }
-                    var eligibleContestantIds = _.map(contestants, 'id');
+                    var eligibleContestantIds = _map(contestants, 'id');
                     updateRound(roundId, eligibleContestantIds, done);
                 });
             }
-            var previousRound = _.find(rounds, 'index', round.index - 1);
-            var eligibleContestantIds = _.difference(previousRound.eligibleContestantIds, previousRound.eliminatedContestantIds);
+            var previousRound = _find(rounds, { index : round.index - 1});
+            var eligibleContestantIds = _difference(previousRound.eligibleContestantIds, previousRound.eliminatedContestantIds);
             updateRound(roundId, eligibleContestantIds, done);
         });
     });
